@@ -43,7 +43,7 @@ async function looper(){
                 myNewDate = myData[myData.length-1][6]
                 startTimeStamp = myNewDate
 
-                console.log('CLOSE PRICE: ', myData[myData.length-1][4]);
+                //console.log('CLOSE PRICE: ', myData[myData.length-1][4]);
                 console.log('ARRAY COUNT: ', myData.length);
 
             }
@@ -55,6 +55,9 @@ async function looper(){
         
     return myData;
 }
+
+
+
 
 async function getCandles(symbol, interval, startTime){
 
@@ -71,11 +74,20 @@ async function getCandles(symbol, interval, startTime){
     }
     
 
-    console.log('The Time Frame: ', startTimeStamp)
+    //console.log('The Time Frame: ', startTimeStamp)
 
     let myOutput = await looper();
     return myOutput
 }
 
+async function clearCandles(){
+    startTimeStamp = 1672531200000; // Unix GMT UTC JAN 1 2023
+    myNewDate = 0;
 
-module.exports = { getCandles };
+    mySymbolData = '';
+    myIntervalData = '';
+
+    myData = []
+}
+
+module.exports = { getCandles, clearCandles };

@@ -122,9 +122,9 @@ function checkProfitLoss(){
 
 
 
-async function main() {
+async function main(data) {
     try {
-        jsonData = await readJsonFile(filePath);
+        jsonData = data
 
         for (const data of jsonData) {
             checkLoopData(data);
@@ -143,4 +143,7 @@ async function readJsonFile(filePath) {
     }
 }
 
-main();
+
+module.exports = { main };
+
+//main();
