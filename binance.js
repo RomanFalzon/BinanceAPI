@@ -38,21 +38,21 @@ async function looper(){
         myNewData = await fetchData(); //get the response
         
             if(myNewData.length !== 0){
+                myData = [...myData, ...myNewData]
 
+                myNewDate = myData[myData.length-1][6]
+                startTimeStamp = myNewDate
+
+                console.log('CLOSE PRICE: ', myData[myData.length-1][4]);
+                console.log('ARRAY COUNT: ', myData.length);
+
+            }
+
+            if(myNewData.length === 0){
+                keepLooping = false
+            }
+        }
         
-            myData = [...myData, ...myNewData]
-
-            myNewDate = myData[myData.length-1][6]
-            startTimeStamp = myNewDate
-
-            console.log('CLOSE PRICE: ', myData[myData.length-1][4]);
-
-        }
-
-        if(myNewData.length === 0){
-            keepLooping = false
-        }
-    }
     return myData;
 }
 
