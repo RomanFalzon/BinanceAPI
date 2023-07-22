@@ -8,9 +8,11 @@ let myIntervalData = '';
 
 let myData = []
 
+let url = `https://api.binance.com/api/v3/klines?symbol=${mySymbolData}&interval=${myIntervalData}&startTime=${startTimeStamp}`;
+
 async function fetchData() {
   try {
-    let url = `https://api.binance.com/api/v3/klines?symbol=${mySymbolData}&interval=${myIntervalData}&startTime=${startTimeStamp}`;
+    url = `https://api.binance.com/api/v3/klines?symbol=${mySymbolData}&interval=${myIntervalData}&startTime=${startTimeStamp}`;
     const response = await axios.get(url);
     return response.data;
   } catch (error) {
@@ -44,7 +46,7 @@ async function looper(){
                 startTimeStamp = myNewDate
 
                 //console.log('CLOSE PRICE: ', myData[myData.length-1][4]);
-                console.log('ARRAY COUNT: ', myData.length);
+                //console.log('ARRAY COUNT: ', myData.length);
 
             }
 
@@ -56,25 +58,29 @@ async function looper(){
     return myData;
 }
 
-
-
-
 async function getCandles(symbol, interval, startTime){
 
     mySymbolData = symbol += 'USDT';
     myIntervalData = interval;
 
-
-    if (startTime && typeof startTime === 'string') {
-        startTimeStamp = convertDateToUnix(startTime);
-    } else if (startTime && typeof startTime === 'number') {
-        startTimeStamp = startTime;
-    } else {
-        startTimeStamp = 0;
+    if (!startTime) {
+        startTimeStamp = 0; //Intercal from START - HISTORICAL
     }
-    
-
-    //console.log('The Time Frame: ', startTimeStamp)
+    else{
+        switch (typeof startTime) {
+            case 'string':
+                startTimeStamp = convertDateToUnix(startTime); //STRING BREAKDOWN TO UNIX - ONE TIME CALL
+            break;
+            case 'number':
+                startTimeStamp = startTime; //UNIX FROM THE START - ONE TIME CALL
+            break;
+            case 'boolean':
+                console.log('LIVE DATA'); //LIVE DATA - GETTING CANDLE FROM NOW - PUSHING NEW MADE CANDLES - HAS TO BE USED IN INTERVAL/LOOP ONLY
+            break;
+            default:
+            startTimeStamp = 0; //ONE TIME CALL - HISTORICAL
+        }
+    }
 
     let myOutput = await looper();
     return myOutput
